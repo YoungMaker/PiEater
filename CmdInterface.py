@@ -36,23 +36,27 @@ if __name__ == '__main__':
 
         if main_option == "help" or main_option == "-h" or main_option == "h":
             print "Commands: "
-            print "\t bus <value>: writes <value> onto the databus"
-            print "\t reset: resets the computer"
-            print "\t bus <on/off>: enables data bus"
-            print "\t pc <value>: sets a value into the program counter"
-            print "\t write <addr> <value>: writes a value into the memory address"
-            print "\t clk <rate>: begins clocking the computer at the specified rate. Default rate is 2 Hz"
-            print "\t read <addr>: sets the ram address pointer to the specified address" 
+            print "\t bus|b <value>: writes <value> onto the databus"
+            print "\t reset|r: resets the computer"
+            print "\t bus|b <on/off>: enables data bus"
+            print "\t pc|p <value>: sets a value into the program counter"
+            print "\t write|w <addr> <value>: writes a value into the memory address"
+            print "\t clk|c <rate>: begins clocking the computer at the specified rate. Default rate is 2 Hz"
+            print "\t read|r <addr>: sets the ram address pointer to the specified address" 
+            print "\t step|s: toggles the clock once" 
 
-
-        elif main_option == "reset":
+        elif main_option == "reset" or main_option == "r":
             BoardInterface.reset()
             print "pc reset"
+        
+        elif main_option == "step" or main_option == "s":
+            BoardInterface.toggle_clock()
+            print "clked" 
 
         if len(split_cmds) < 1:
             continue
 
-        elif main_option == "bus":
+        elif main_option == "bus" or main_option == "b":
             pop_val = split_cmds.pop(0)
             if pop_val == "on":
                 print "Turning on the bus controller"
@@ -73,7 +77,7 @@ if __name__ == '__main__':
             except ValueError:
                 print "Invalid argument. Must be 8 bit integer (0-255)"
 
-        elif main_option == "write":
+        elif main_option == "write" or main_option == "w":
             if len(split_cmds) < 2:
                 print "Invalid arguments. Usage: write <addr> <value> writes a value into the memory address"
                 continue
@@ -89,7 +93,7 @@ if __name__ == '__main__':
             except ValueError:
                 print "Invalid argument. Must be 8 bit integer (0-255)"
         
-        elif main_option == "read":
+        elif main_option == "read" or main_option == "r":
             try:
                 value = int(split_cmds.pop(0))
                 if not value_in_range(value, 0, 255): continue
@@ -100,7 +104,7 @@ if __name__ == '__main__':
                 print "Invalid argument. Must be 8 bit integer (0-255)"
 
 
-        elif main_option == "pc":
+        elif main_option == "pc" or main_option =="p":
             try:
                 value = int(split_cmds.pop(0))
                 if not value_in_range(value, 0, 255): continue
